@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <meta lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" type="image/x-icon" href="images/edited/faviconv2.png">
+
+    <title>Tsucky-maker</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="stuff">
+        <div id="hitbox-container"></div>
+        <div id="tsucky-container"></div>
+        <div id="editor" class="editor-container">
+            <div id="header-text">Editor :3</div>
+            <div id="part-editor" class="editor-container">
+                <div id="part-name"></div>
+                <div id="hue-selector" class="selector editor-container">
+                <input type="range" min="0" max="360" value="0" class="slider" id="hue-slider">
+                <h1 id="hue-value">value</h1>
+                </div>
+                <div id="brightness-selector" class="selector editor-container">
+                <input type="range" min="25" max="75" value="50" class="slider" id="brightness-slider">
+                <h1 id="brightness-value">value</h1>
+                </div>
+                <div id="grayscale-selector" class="selector editor-container">
+                <input type="range" min="0" max="100" value="100" class="slider" id="grayscale-slider">
+                <h1 id="grayscale-value">value</h1>
+                </div>
+                <div id="effects"></div>
+            </div>
+            <div id="background-editor editor-container"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
