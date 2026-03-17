@@ -80,7 +80,7 @@ class KITTY_PART {
         this.hitbox.style.left = `${hitbox[3]}%`;
         this.hitbox.style.rotate = `${hitbox[4]}deg`;
         this.hitbox.style.zIndex = 2 + hitbox[5];
-        //this.hitbox.style.backgroundColor = `hsla(${60*hitbox[5]}, 100%, 50%, 0.3)`;
+        this.hitbox.style.backgroundColor = `hsla(${60*hitbox[5]}, 100%, 50%, 0.3)`;
 
         this.hitbox.addEventListener("click", e => {
 
@@ -266,6 +266,12 @@ function Update() {
     CAT_CONTAINER.style.width = `${width}px`;
     HITBOX_CONTAINER.style.width = `${width}px`;
 
+    hue += 1;
+
+    KITTY.forEach(part => {
+        part.hue =  
+    })
+
     checkForAchievements();
 }
 
@@ -293,7 +299,6 @@ function eyes(){
 }
 
 function favouriteColor(){
-
     let purple = true;
     KITTY.forEach(part => {
         if(part.hue < 200 || part.hue > 285){
@@ -302,7 +307,18 @@ function favouriteColor(){
     })
 
         if(purple){
-            alert("MY favourite color :3");
+            alert("My favourite color :3 (168, y, 946)");
             return true;
         }
+}
+
+function something() {
+    if(true){
+        alert("Behind the trapdoor")
+        return true;
+    }
+}
+
+function nitro() {
+    
 }
