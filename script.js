@@ -248,7 +248,7 @@ function addAccessory(img_name) {
     let image = document.createElement("img");
     image.setAttribute("id", img_name);
     image.classList.add("accessory");
-    image.setAttribute("src", `images/accessories/${img_name}.PNG`);
+    image.setAttribute("src", `images/accessories/${img_name}.png`);
     CAT_CONTAINER.appendChild(image);
 }
 
