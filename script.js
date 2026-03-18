@@ -80,10 +80,9 @@ class KITTY_PART {
         this.hitbox.style.left = `${hitbox[3]}%`;
         this.hitbox.style.rotate = `${hitbox[4]}deg`;
         this.hitbox.style.zIndex = 2 + hitbox[5];
-        this.hitbox.style.backgroundColor = `hsla(${60*hitbox[5]}, 100%, 50%, 0.3)`;
 
         this.hitbox.addEventListener("click", e => {
-
+        
             if(e.ctrlKey){
                 if(this.selected){
                     this.selected = false;
@@ -315,4 +314,15 @@ function something() {
 
 function nitro() {
     
+}
+
+//devtools
+
+function toggleHitboxVisibility(){
+    if(HITBOX_CONTAINER.classList.contains("invisible")){
+        HITBOX_CONTAINER.classList.remove("invisible");
+        Array.from(document.getElementsByClassName("hitbox")).forEach(hitbox => {hitbox.style.backgroundColor = `hsla(${60*parseInt(hitbox.style.zIndex)}, 100%, 50%, 0.3)`});
+    }else{
+        HITBOX_CONTAINER.classList.add("invisible");
+    }
 }

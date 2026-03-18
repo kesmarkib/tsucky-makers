@@ -30,6 +30,10 @@ html, body{
     position: absolute;
 }
 
+.invisible *{
+    background-color: transparent !important;
+}
+
 .cat_part{
     z-index: 0;
 }
@@ -121,8 +125,6 @@ html, body{
 #grayscale-selector{
     background-color: hsla(60deg, 100%, 50%, 0.3);
 }
-
-
 
 img{
     pointer-events: none;
