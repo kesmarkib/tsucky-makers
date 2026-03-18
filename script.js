@@ -266,12 +266,6 @@ function Update() {
     CAT_CONTAINER.style.width = `${width}px`;
     HITBOX_CONTAINER.style.width = `${width}px`;
 
-    hue += 1;
-
-    KITTY.forEach(part => {
-        part.hue =  
-    })
-
     checkForAchievements();
 }
 
