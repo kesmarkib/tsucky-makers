@@ -300,21 +300,26 @@ function favouriteColor(){
     })
 
         if(purple){
-            alert("My favourite color :3 (168, y, 946)");
+            let a = document.createElement("a");
+            a.setAttribute("id", "flower-link")
+            a.setAttribute("href", "/images/Happy Birthday!.png");
+            a.setAttribute("download", "Flower");
+
+            let img = document.createElement("img");
+            img.setAttribute("id", "flower");
+            img.setAttribute("src", "images/Happy Birthday!.png");
+
+            a.appendChild(img);
+
+            a.addEventListener("mousedown", e => {document.getElementById("flower-link").remove()})
+
+            alert("A beautiful colour (168, y, 946)");
+            STUFF.appendChild(a);
+            
             return true;
         }
 }
 
-function something() {
-    if(true){
-        alert("Behind the trapdoor")
-        return true;
-    }
-}
-
-function nitro() {
-    
-}
 
 //devtools
 
@@ -324,5 +329,12 @@ function toggleHitboxVisibility(){
         Array.from(document.getElementsByClassName("hitbox")).forEach(hitbox => {hitbox.style.backgroundColor = `hsla(${60*parseInt(hitbox.style.zIndex)}, 100%, 50%, 0.3)`});
     }else{
         HITBOX_CONTAINER.classList.add("invisible");
+    }
+}
+
+function selectAll(){
+    for(let i = 0; i < KITTY.length; i++){
+        let part = KITTY[i];
+        selectPart(part.name);
     }
 }
