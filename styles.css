@@ -3,6 +3,8 @@ html, body{
     height: 100vh;
     width: 100vw;
     background-color: rgb(20, 16, 20);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #stuff{
@@ -59,12 +61,10 @@ html, body{
     height: 100%;
     background-color: black;
     right: 0;
-    
+    overflow: scroll;
 }
 
 #header-text{
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 21pt;
     margin: 10px;
@@ -73,7 +73,7 @@ html, body{
 #part-editor{
     margin: 10px;
     width: 100%;
-    height: 300px;
+    height: auto;
 }
 
 .selector{
@@ -124,6 +124,86 @@ html, body{
 
 #grayscale-selector{
     background-color: hsla(60deg, 100%, 50%, 0.3);
+}
+
+#select-all{
+    margin: 10px;
+    width: 90%;
+    height: 50px;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: row;
+
+    border: solid;
+    border-width: 1px;
+    border-color: white;
+    border-style: dashed;
+    padding: 2px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 5px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(20, 16, 20);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.checkbox-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .checkbox-slider {
+  background-color: #ff8800ec;
+}
+
+input:focus + .checkbox-slider {
+  box-shadow: 0 0 1px #ff8800ec;
+}
+
+input:checked + .checkbox-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.checkbox-slider.round {
+  border-radius: 34px;
+}
+
+.checkbox-slider.round:before {
+  border-radius: 50%;
+}
+
+#select-all-text {
+    font-weight: bolder;
+    font-size: 16pt;
 }
 
 img{

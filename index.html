@@ -18,18 +18,25 @@
             <div id="part-editor" class="editor-container">
                 <div id="part-name"></div>
                 <div id="hue-selector" class="selector editor-container">
-                <input type="range" min="0" max="360" value="0" class="slider" id="hue-slider">
-                <h1 id="hue-value">value</h1>
+                    <input type="range" min="0" max="360" value="0" class="slider" id="hue-slider">
+                    <h1 id="hue-value">value</h1>
                 </div>
                 <div id="brightness-selector" class="selector editor-container">
-                <input type="range" min="25" max="75" value="50" class="slider" id="brightness-slider">
-                <h1 id="brightness-value">value</h1>
+                    <input type="range" min="25" max="75" value="50" class="slider" id="brightness-slider">
+                    <h1 id="brightness-value">value</h1>
                 </div>
                 <div id="grayscale-selector" class="selector editor-container">
-                <input type="range" min="0" max="100" value="100" class="slider" id="grayscale-slider">
-                <h1 id="grayscale-value">value</h1>
+                    <input type="range" min="0" max="100" value="100" class="slider" id="grayscale-slider">
+                    <h1 id="grayscale-value">value</h1>
                 </div>
                 <div id="effects"></div>
+            </div>
+            <div id="select-all" class="editor-container">
+                <label class="switch">
+                    <input type="checkbox" id="select-all-switch">
+                    <span class="checkbox-slider round"></span>
+                </label>
+                <label id="select-all-text">Select All</label>
             </div>
             <div id="background-editor editor-container"></div>
         </div>

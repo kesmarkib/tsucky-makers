@@ -8,6 +8,8 @@ const HUE_SELECTOR = {"this": document.getElementById("hue-selector"), "slider":
 const BRIGHTNESS_SELECTOR = {"this": document.getElementById("brightness-selector"), "slider":  document.getElementById("brightness-slider"), "value": document.getElementById("brightness-value")};
 const GRAYSCALE_SELECTOR = {"this": document.getElementById("grayscale-selector"), "slider":  document.getElementById("grayscale-slider"), "value": document.getElementById("grayscale-value")};
 
+const ACHIEVEMENTS_ENABLED = false;
+
 
 const KITTY = [];
 
@@ -82,7 +84,9 @@ class KITTY_PART {
         this.hitbox.style.zIndex = 2 + hitbox[5];
 
         this.hitbox.addEventListener("click", e => {
-        
+
+            document.getElementById("full-outline").style.visibility = "hidden";
+
             if(e.ctrlKey){
                 if(this.selected){
                     this.selected = false;
@@ -162,6 +166,51 @@ function constructKitty() {
 
 
 // part selection and editing
+
+let outline_full = document.createElement("img");
+outline_full.setAttribute("id", "full-outline");
+outline_full.classList.add("outline");
+outline_full.setAttribute("src", "images/edited/outlines/full.png");
+outline_full.style.visibility = "hidden";
+
+CAT_CONTAINER.appendChild(outline_full);
+
+let select_all_switch = document.getElementById("select-all-switch");
+select_all_switch.addEventListener("change", e => {e.target.checked ==  true ? selectAll() : deselectAll()})
+
+function selectAll(){
+    
+    let num_of_selected = SELECTED.length; 
+                    
+    for(let i = 0; i < num_of_selected; i++){
+        let partToDeselect = SELECTED[0];
+        
+        partToDeselect.selected = false;
+        partToDeselect.toggleOutline();
+        SELECTED.splice(SELECTED.indexOf(partToDeselect), 1);
+    }
+    
+    for(let i = 0; i < KITTY.length; i++){
+        let part = KITTY[i];
+        selectPart(part.name);
+    }
+
+    document.getElementById("full-outline").style.visibility = "visible";
+}
+
+function deselectAll(){
+    let num_of_selected = SELECTED.length; 
+                    
+    for(let i = 0; i < num_of_selected; i++){
+        let partToDeselect = SELECTED[0];
+        
+        partToDeselect.selected = false;
+        partToDeselect.toggleOutline();
+        SELECTED.splice(SELECTED.indexOf(partToDeselect), 1);
+    }
+    
+    document.getElementById("full-outline").style.visibility = "hidden";
+}
 
 function getPart(name){
     return KITTY.find((element) => element.name == name);
@@ -265,7 +314,9 @@ function Update() {
     CAT_CONTAINER.style.width = `${width}px`;
     HITBOX_CONTAINER.style.width = `${width}px`;
 
-    checkForAchievements();
+    if(ACHIEVEMENTS_ENABLED) {
+        checkForAchievements();
+    }
 }
 
 setInterval(Update, 1000/60);
@@ -323,18 +374,17 @@ function favouriteColor(){
 
 //devtools
 
+function enableAchievements(password) {
+    if(password == "0317"){
+        ACHIEVEMENTS_ENABLED = true;
+    }
+}
+
 function toggleHitboxVisibility(){
     if(HITBOX_CONTAINER.classList.contains("invisible")){
         HITBOX_CONTAINER.classList.remove("invisible");
         Array.from(document.getElementsByClassName("hitbox")).forEach(hitbox => {hitbox.style.backgroundColor = `hsla(${60*parseInt(hitbox.style.zIndex)}, 100%, 50%, 0.3)`});
     }else{
         HITBOX_CONTAINER.classList.add("invisible");
-    }
-}
-
-function selectAll(){
-    for(let i = 0; i < KITTY.length; i++){
-        let part = KITTY[i];
-        selectPart(part.name);
     }
 }
