@@ -85,6 +85,8 @@ class KITTY_PART {
 
         this.hitbox.addEventListener("click", e => {
 
+
+            select_all_switch.checked = false;
             document.getElementById("full-outline").style.visibility = "hidden";
 
             if(e.ctrlKey){
@@ -377,6 +379,8 @@ function favouriteColor(){
 function enableAchievements(password) {
     if(password == "0317"){
         ACHIEVEMENTS_ENABLED = true;
+        console.log("achievements enabled");
+        
     }
 }
 
