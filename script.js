@@ -406,7 +406,7 @@ function Update() {
 
 setInterval(Update, 1000/60);
 
-const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": favouriteColor, "completed": false}]
+const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": favouriteColor, "completed": false, "timer": 0}];
 
 function checkForAchievements() {
     for(let i = 0; i < ACHIEVEMENTS.length; i++){
@@ -429,30 +429,35 @@ function eyes(){
 
 function favouriteColor(){
     let purple = true;
+
     KITTY.forEach(part => {
-        if(part.hue < 200 || part.hue > 285){
+        if(part.hue < 245 || part.hue > 285){
             purple = false;
         }
     })
 
     if(purple){
-        let a = document.createElement("a");
-        a.setAttribute("id", "flower-link")
-        a.setAttribute("href", "/images/Happy Birthday!.png");
-        a.setAttribute("download", "Flower");
+        ACHIEVEMENTS[1].timer += 1
 
-        let img = document.createElement("img");
-        img.setAttribute("id", "flower");
-        img.setAttribute("src", "images/Happy Birthday!.png");
+        if(ACHIEVEMENTS[1].timer > 2) {
+            let a = document.createElement("a");
+            a.setAttribute("id", "flower-link")
+            a.setAttribute("href", "/images/Happy Birthday!.png");
+            a.setAttribute("download", "Flower");
 
-        a.appendChild(img);
+            let img = document.createElement("img");
+            img.setAttribute("id", "flower");
+            img.setAttribute("src", "images/Happy Birthday!.png");
 
-        a.addEventListener("mousedown", e => {document.getElementById("flower-link").remove()})
+            a.appendChild(img);
 
-        alert("A beautiful colour (168, y, 946)");
-        STUFF.appendChild(a);
-            
-        return true;
+            a.addEventListener("mousedown", e => {document.getElementById("flower-link").remove()})
+
+            alert("A beautiful colour (168, y, 946)");
+            STUFF.appendChild(a);
+
+            return true;
+        }
     }
 }
 
