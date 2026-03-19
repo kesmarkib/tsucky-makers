@@ -38,7 +38,20 @@
                 </label>
                 <label id="select-all-text">Select All</label>
             </div>
-            <div id="background-editor editor-container"></div>
+            <div id="background-editor" class="editor-container">
+                <input type="color" id="bg-picker" value="#141014">
+                <label id="bg-picker-text">Select Background Color</label>
+            </div>
+            <div id="export-editor" class="">
+                <input type="button" value="Export" onclick="exportImage()">
+                <div>
+                    <label class="switch">
+                        <input type="checkbox" id="export-bg-switch">
+                        <span class="checkbox-slider round"></span>
+                    </label>
+                    <label id="export-bg-text">Background</label>
+                </div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

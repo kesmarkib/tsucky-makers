@@ -1,3 +1,5 @@
+//TODO: enable exporting as image.
+
 const STUFF = document.getElementById("stuff");
 
 const CAT_CONTAINER = document.getElementById("tsucky-container");
@@ -12,6 +14,7 @@ const ACHIEVEMENTS_ENABLED = false;
 
 
 const KITTY = [];
+const ACCESSORIES = [];
 
 const PARAMS = [
     ["body", [86.3, 62.6, 22.4, 8.3, 0, 0]],
@@ -214,6 +217,8 @@ function deselectAll(){
     document.getElementById("full-outline").style.visibility = "hidden";
 }
 
+document.getElementById("bg-picker").addEventListener("change", e => {document.body.style.backgroundColor = e.target.value});
+
 function getPart(name){
     return KITTY.find((element) => element.name == name);
 }
@@ -306,6 +311,55 @@ constructKitty();
 updateSelectors();
 updateSliders();
 
+
+
+function exportImage(){
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("id", "export");
+    canvas.setAttribute("width", "2560");
+    canvas.setAttribute("height", "3072");
+    const ctx = canvas.getContext("2d");
+
+    if(document.getElementById("export-bg-switch").checked){
+        let body_color = document.body.style.backgroundColor;
+        if(body_color != ""){
+            ctx.fillStyle = body_color;
+        }else{
+            ctx.fillstyle = "#141014";
+        }
+        ctx.fillRect(0, 0, 2560, 3072);
+    }
+
+    for(let i = 0; i < KITTY.length; i++){
+        const part = KITTY[i];
+        const image = document.getElementById(part.name);
+        ctx.filter = `hue-rotate(${part.hue}deg) grayscale(${part.grayscale}%) brightness(${part.brightness}%)`;
+        ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+    }
+
+    for(let i = 0; i < ACCESSORIES.length; i++){
+        const acc = ACCESSORIES[i];
+        const image = document.getElementById(acc.name);
+        ctx.filter = `hue-rotate(${acc.hue}deg) grayscale(${acc.grayscale}%) brightness(${acc.brightness}%)`;
+        ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+    }
+
+    canvas.toBlob((blob) => {
+        if (!blob) return;
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "kitty.png";
+        document.body.appendChild(link);
+        link.click();
+
+        URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+    }, "image/png");
+}
+
 //global variables to be kept track of
 let hue = 0;
 let SELECTED = [];
@@ -352,27 +406,26 @@ function favouriteColor(){
         }
     })
 
-        if(purple){
-            let a = document.createElement("a");
-            a.setAttribute("id", "flower-link")
-            a.setAttribute("href", "/images/Happy Birthday!.png");
-            a.setAttribute("download", "Flower");
+    if(purple){
+        let a = document.createElement("a");
+        a.setAttribute("id", "flower-link")
+        a.setAttribute("href", "/images/Happy Birthday!.png");
+        a.setAttribute("download", "Flower");
 
-            let img = document.createElement("img");
-            img.setAttribute("id", "flower");
-            img.setAttribute("src", "images/Happy Birthday!.png");
+        let img = document.createElement("img");
+        img.setAttribute("id", "flower");
+        img.setAttribute("src", "images/Happy Birthday!.png");
 
-            a.appendChild(img);
+        a.appendChild(img);
 
-            a.addEventListener("mousedown", e => {document.getElementById("flower-link").remove()})
+        a.addEventListener("mousedown", e => {document.getElementById("flower-link").remove()})
 
-            alert("A beautiful colour (168, y, 946)");
-            STUFF.appendChild(a);
+        alert("A beautiful colour (168, y, 946)");
+        STUFF.appendChild(a);
             
-            return true;
-        }
+        return true;
+    }
 }
-
 
 //devtools
 
