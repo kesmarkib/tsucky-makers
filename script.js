@@ -431,13 +431,13 @@ function favouriteColor(){
     let purple = true;
 
     KITTY.forEach(part => {
-        if(part.hue < 245 || part.hue > 285){
+        if(part.hue < 210 || part.hue > 245){
             purple = false;
         }
     })
 
     if(purple){
-        ACHIEVEMENTS[1].timer += 1
+        ACHIEVEMENTS[1].timer += 2/60;
 
         if(ACHIEVEMENTS[1].timer > 2) {
             let a = document.createElement("a");
