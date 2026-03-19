@@ -458,6 +458,8 @@ function favouriteColor(){
 
             return true;
         }
+    }else{
+        ACHIEVEMENTS[1].timer = 0;
     }
 }
 
