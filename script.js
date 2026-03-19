@@ -246,8 +246,8 @@ function selectPart(name){
 
     HUE_SELECTOR.slider.value  = part.hue;
     HUE_SELECTOR.value.innerText = part.hue;
-    BRIGHTNESS_SELECTOR.slider.value = part.brightness - 50;
-    BRIGHTNESS_SELECTOR.value.innerText = part.brightness - 50;
+    BRIGHTNESS_SELECTOR.slider.value = part.brightness/2;
+    BRIGHTNESS_SELECTOR.value.innerText = part.brightness/2;
     GRAYSCALE_SELECTOR.slider.value = part.grayscale;
     GRAYSCALE_SELECTOR.value.innerText = part.grayscale;
 }
@@ -302,7 +302,8 @@ function changeBrightness(p){
 function updateSliders() {
     let h = 60 + parseInt(HUE_SELECTOR.slider.value); //hue
     let s = 100 - parseInt(GRAYSCALE_SELECTOR.slider.value); //saturation
-    let l = BRIGHTNESS_SELECTOR.slider.value; //lightness
+    let l = BRIGHTNESS_SELECTOR.slider.value*2; //lightness    
+
 
     HUE_SELECTOR.slider.style.background = `linear-gradient(to right in hsl longer hue, hsl(60deg, ${s}%, ${l}%), hsl(60deg, ${s}%, ${l}%))`;
     GRAYSCALE_SELECTOR.slider.style.background = `linear-gradient(to right, hsl(${h}deg, 100%, ${l}%), hsl(${h}deg, 0%, ${l}%))`;
