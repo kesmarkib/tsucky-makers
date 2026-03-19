@@ -10,10 +10,11 @@ const HUE_SELECTOR = {"this": document.getElementById("hue-selector"), "slider":
 const BRIGHTNESS_SELECTOR = {"this": document.getElementById("brightness-selector"), "slider":  document.getElementById("brightness-slider"), "value": document.getElementById("brightness-value")};
 const GRAYSCALE_SELECTOR = {"this": document.getElementById("grayscale-selector"), "slider":  document.getElementById("grayscale-slider"), "value": document.getElementById("grayscale-value")};
 
-const ACHIEVEMENTS_ENABLED = false;
+let ACHIEVEMENTS_ENABLED = false;
 
 
 const KITTY = [];
+const RAINBOW = [];
 const ACCESSORIES = [];
 
 const PARAMS = [
@@ -88,7 +89,7 @@ class KITTY_PART {
 
         this.hitbox.addEventListener("click", e => {
 
-
+            document.getElementById("rainbow-switch").checked = RAINBOW.includes(this);
             select_all_switch.checked = false;
             document.getElementById("full-outline").style.visibility = "hidden";
 
@@ -180,8 +181,24 @@ outline_full.style.visibility = "hidden";
 
 CAT_CONTAINER.appendChild(outline_full);
 
+document.getElementById("rainbow-switch").addEventListener("change", e => {
+    if(e.target.checked == true) {
+        SELECTED.forEach(part => {
+            if(!RAINBOW.includes(part)){
+                RAINBOW.push(part)
+            }
+        })
+    }else{
+        SELECTED.forEach(part => {
+            if(RAINBOW.includes(part)){
+                RAINBOW.splice(RAINBOW.indexOf(part), 1);
+            }
+        })
+    }
+});
+
 let select_all_switch = document.getElementById("select-all-switch");
-select_all_switch.addEventListener("change", e => {e.target.checked ==  true ? selectAll() : deselectAll()})
+select_all_switch.addEventListener("change", e => {e.target.checked ==  true ? selectAll() : deselectAll()});
 
 function selectAll(){
     
@@ -217,7 +234,7 @@ function deselectAll(){
     document.getElementById("full-outline").style.visibility = "hidden";
 }
 
-document.getElementById("bg-picker").addEventListener("change", e => {document.body.style.backgroundColor = e.target.value});
+document.getElementById("bg-picker").addEventListener("change", e => {document.body.style.backgroundColor = e.target.value; document.querySelector(":root").style.setProperty("--accent-color", e.target.value)});
 
 function getPart(name){
     return KITTY.find((element) => element.name == name);
@@ -311,8 +328,6 @@ constructKitty();
 updateSelectors();
 updateSliders();
 
-
-
 function exportImage(){
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "export");
@@ -361,14 +376,28 @@ function exportImage(){
 }
 
 //global variables to be kept track of
-let hue = 0;
+let HUE = 0;
 let SELECTED = [];
 
 function Update() {
-    // on screen resize
     let width = Array.from(CAT_CONTAINER.children)[0].getBoundingClientRect().width;
     CAT_CONTAINER.style.width = `${width}px`;
     HITBOX_CONTAINER.style.width = `${width}px`;
+
+    HUE += 1;
+    if(HUE == 360){
+        HUE = 0;
+    }
+
+    RAINBOW.forEach(part => {
+        part.hue = HUE;
+        part.updateImage();
+    })
+
+    if(RAINBOW.length != 0){
+        updateSelectors();
+        updateSliders();
+    }
 
     if(ACHIEVEMENTS_ENABLED) {
         checkForAchievements();
@@ -432,8 +461,8 @@ function favouriteColor(){
 function enableAchievements(password) {
     if(password == "0317"){
         ACHIEVEMENTS_ENABLED = true;
+        document.getElementById("notice").style.visibility = "visible";
         console.log("achievements enabled");
-        
     }
 }
 
