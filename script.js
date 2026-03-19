@@ -466,8 +466,10 @@ function favouriteColor(){
 
 //devtools
 
+const PSSWD = "0317";
+
 function enableAchievements(password) {
-    if(password == "0317"){
+    if(password == PSSWD){
         ACHIEVEMENTS_ENABLED = true;
         document.getElementById("notice").style.visibility = "visible";
         console.log("achievements enabled");
