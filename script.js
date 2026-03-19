@@ -302,7 +302,7 @@ function changeBrightness(p){
 function updateSliders() {
     let h = 60 + parseInt(HUE_SELECTOR.slider.value); //hue
     let s = 100 - parseInt(GRAYSCALE_SELECTOR.slider.value); //saturation
-    let l = BRIGHTNESS_SELECTOR.slider.value*2; //lightness    
+    let l = BRIGHTNESS_SELECTOR.slider.value; //lightness    
 
 
     HUE_SELECTOR.slider.style.background = `linear-gradient(to right in hsl longer hue, hsl(60deg, ${s}%, ${l}%), hsl(60deg, ${s}%, ${l}%))`;
