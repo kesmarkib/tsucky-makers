@@ -48,8 +48,33 @@ html, body{
     z-index: 1;
 }
 
-.accessory{
-    z-index: 2;
+#header-text{
+    align-self: baseline;
+    font-weight: bolder;
+    font-size: 21pt;
+    margin: 10px;
+}
+
+#derp{
+    color: var(--accent-color);
+}
+
+.header{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#part-editor-header :hover {
+    cursor: pointer;
+}
+
+#accessory-selector-header :hover {
+    cursor: pointer;
+}
+
+.tab{
+    width: 100%;
+    height: 100%;
 }
 
 .editor-container{
@@ -89,17 +114,6 @@ html, body{
     right: 0;
     overflow-x: hidden;
     overflow-y: scroll;
-}
-
-#header-text{
-    align-self: baseline;
-    font-weight: bolder;
-    font-size: 21pt;
-    margin: 10px;
-}
-
-#derp{
-    color: var(--accent-color);
 }
 
 #part-editor{
@@ -270,10 +284,64 @@ input:focus + .rainbow {
     cursor: pointer;
 }
 
+#accessories-container{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    width: 90%;
+    height: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.accessory-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 10px;
+    padding: 5px;
+    width: 100px;  
+    height: auto;
+
+    border: dashed var(--accent-color);
+    border-width: 5px;
+    
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+    font-size: 15pt;
+}
+
+.accessory-container:hover{
+    border: dashed;
+    border-width: 5px;
+}
+
+.active{
+    border: solid;
+    border-color: var(--accent-color);
+}
+
+.active:hover{
+    border: solid;
+    border-width: 5px;
+}
+
+.accessory-container img{
+    width: 100px;
+    height: 100px;
+}
+
+.accessory-container label{
+    pointer-events: none;
+}
+
 img{
     pointer-events: none;
     user-select: none;
 }
+
 
 #flower{
     width: auto;

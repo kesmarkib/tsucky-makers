@@ -1,4 +1,5 @@
-//TODO: enable exporting as image.
+//TODO: reset button, slider values are input fields, accessories
+//priority: 3, 2, 1
 
 const STUFF = document.getElementById("stuff");
 
@@ -6,12 +7,15 @@ const CAT_CONTAINER = document.getElementById("tsucky-container");
 const HITBOX_CONTAINER = document.getElementById("hitbox-container");
 
 const EDITOR = document.getElementById("editor");
+const PART_EDITOR = document.getElementById("part-editor-container");
+const ACCESSORY_SELECTOR_CONTAINER = document.getElementById("accessory-selector-container");
+const ACCESSORY_CONTAINER = document.getElementById("accessories-container");
+
 const HUE_SELECTOR = {"this": document.getElementById("hue-selector"), "slider": document.getElementById("hue-slider"), "value": document.getElementById("hue-value")};
 const BRIGHTNESS_SELECTOR = {"this": document.getElementById("brightness-selector"), "slider":  document.getElementById("brightness-slider"), "value": document.getElementById("brightness-value")};
 const GRAYSCALE_SELECTOR = {"this": document.getElementById("grayscale-selector"), "slider":  document.getElementById("grayscale-slider"), "value": document.getElementById("grayscale-value")};
 
 let ACHIEVEMENTS_ENABLED = false;
-
 
 const KITTY = [];
 const RAINBOW = [];
@@ -170,7 +174,31 @@ function constructKitty() {
     }
 }
 
+//editor
+const ACCESSORYHEADER = document.getElementById("accessory-selector-header");
+const EDITORHEADER = document.getElementById("part-editor-header");
+ACCESSORYHEADER.addEventListener("click", e => {changeWindow("accessory");});
+EDITORHEADER.addEventListener("click", e => {changeWindow("editor");});
 
+changeWindow("editor");
+
+function changeWindow(window){    
+    switch(window){
+        case "editor":            
+            ACCESSORYHEADER.style.textDecoration = "none";
+            EDITORHEADER.style.textDecoration = "underline";
+            PART_EDITOR.style.display = "flex";
+            ACCESSORY_SELECTOR_CONTAINER.style.display = "none";
+            break;
+
+        case "accessory":
+            ACCESSORYHEADER.style.textDecoration = "underline";
+            EDITORHEADER.style.textDecoration = "none";
+            PART_EDITOR.style.display = "none";
+            ACCESSORY_SELECTOR_CONTAINER.style.display = "flex";
+            break;
+    }
+}
 // part selection and editing
 
 let outline_full = document.createElement("img");
@@ -251,6 +279,7 @@ function selectPart(name){
     GRAYSCALE_SELECTOR.slider.value = part.grayscale;
     GRAYSCALE_SELECTOR.value.innerText = part.grayscale;
 }
+
 //hue
 HUE_SELECTOR.slider.addEventListener("input", e => {
     let value = e.target.value;
@@ -316,13 +345,49 @@ function updateSelectors(){
     BRIGHTNESS_SELECTOR.this.style.backgroundColor = `rgba(${Math.floor((parseInt(BRIGHTNESS_SELECTOR.slider.value)/100)*255)}, ${Math.floor((parseInt(BRIGHTNESS_SELECTOR.slider.value)/100)*255)}, ${Math.floor((parseInt(BRIGHTNESS_SELECTOR.slider.value)/100)*255)}, 0.3)`;
 }
 
+//accessories
+const accessories_available = ["alien eyes", "antenna", "cigarette", "halo", "kitty", "sett hat", "shoes", "voidgrub"];
 
-function addAccessory(img_name) {
+for(let i = 0; i < accessories_available.length; i++){
+    const acc = accessories_available[i];
+
+    const div = document.createElement("div");
+    div.classList.add("accessory-container");
+    div.setAttribute("id", acc.replace(" ", "-") + "-container")
+    const thumbnail = document.createElement("img");
+    thumbnail.setAttribute("src", `images/accessories/thumbnail/${acc}.png`);
+    const label = document.createElement("label");
+    label.innerText = acc;
+    div.appendChild(thumbnail);
+    div.appendChild(label);
+
+    ACCESSORY_CONTAINER.appendChild(div);
+
+   div.addEventListener("click", e => {     
+        if(ACCESSORIES.includes(e.explicitOriginalTarget)){
+            removeAccessory(e.explicitOriginalTarget);
+            div.classList.remove("active");
+        }else{
+            addAccessory(e.explicitOriginalTarget);
+            div.classList.add("active")
+        }
+   })
+}
+
+function addAccessory(target) {
+    const img_name = (target.id).substring(0, target.id.length - 10);    
     let image = document.createElement("img");
     image.setAttribute("id", img_name);
     image.classList.add("accessory");
-    image.setAttribute("src", `images/accessories/${img_name}.png`);
+    image.setAttribute("src", `images/accessories/${img_name.replace("-", " ")}.png`);
     CAT_CONTAINER.appendChild(image);
+    ACCESSORIES.push(target);
+}
+
+function removeAccessory(target) {
+    const img_name = (target.id).substring(0, target.id.length - 10);
+    CAT_CONTAINER.removeChild(document.getElementById(img_name));
+    ACCESSORIES.splice(ACCESSORIES.indexOf(target), 1);
 }
 
 constructKitty();
@@ -407,7 +472,7 @@ function Update() {
 
 setInterval(Update, 1000/60);
 
-const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": favouriteColor, "completed": false, "timer": 0}];
+const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": purpleColor, "completed": false, "timer": 0}, {"function": bookHint, "completed": false}];
 
 function checkForAchievements() {
     for(let i = 0; i < ACHIEVEMENTS.length; i++){
@@ -428,7 +493,7 @@ function eyes(){
     }
 }
 
-function favouriteColor(){
+function purpleColor(){
     let purple = true;
 
     KITTY.forEach(part => {
@@ -464,15 +529,105 @@ function favouriteColor(){
     }
 }
 
-//devtools
+function bookHint() {
+    //body: 270-300(h) 50-75(l) 0-25(s)
+    //head, tail, feet 100(s) l<50
+    //at least 1 rainbow thing (nose, iris, leaf)
 
+    let nyanCat = true;
+    let rainbowPart = false;
+
+    KITTY.forEach(part => {
+        if(part.name == "body"){
+            if(part.hue < 270 || part.hue > 300){
+                nyanCat = false;
+            }
+            if(part.brightness < 50){
+                nyanCat = false;
+            }
+            if(part.grayscale > 25){
+                nyanCat = false;
+            }
+        }else if(part.name.includes("tail") || part.name.includes("leg") || part.name.includes("paw") || part.name == "head"){
+            if(part.grayscale != 100){
+                nyanCat = false;
+            }
+        }else if(["nose", "iris-left", "iris-right", "leaf"].includes(part.name)){
+            if(RAINBOW.includes(part)){
+                rainbowPart = true;
+            }
+        }
+    })
+
+    if(!rainbowPart){
+        nyanCat = false;
+    }
+    
+    if(nyanCat){
+        alert("To get to know where the last book is, you must become the true hacker, and find the clue hidden somewhere in the source code (Ctrl + u -> script.js)");
+        return true;
+    }
+}
+
+
+/* 
+░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░       ░▒▓███████▓▒░▒▓████████▓▒░▒▓██████▓▒░░▒▓███████▓▒░░▒▓████████▓▒░▒▓████████▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░         ░▒▓█▓▒░     
+ ░▒▓█▓▒▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░         ░▒▓█▓▒░     
+ ░▒▓█▓▒▒▓█▓▒░░▒▓██████▓▒░ ░▒▓███████▓▒░ ░▒▓██████▓▒░        ░▒▓██████▓▒░░▒▓██████▓▒░░▒▓█▓▒░      ░▒▓███████▓▒░░▒▓██████▓▒░    ░▒▓█▓▒░     
+  ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░                 ░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░         ░▒▓█▓▒░     
+  ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░                 ░▒▓█▓▒░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░         ░▒▓█▓▒░     
+   ░▒▓██▓▒░  ░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░  ░▒▓█▓▒░          ░▒▓███████▓▒░░▒▓████████▓▒░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░  ░▒▓█▓▒░     
+    
+╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║   Very secret incrediby secret message: You only have to mine a very specific interactive 'block' (I don't even think it counts as a block)   ║
+║   good luck, and again only read it if you are sure you won't be mad                                                                          ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+*/
+
+//devtools
 const PSSWD = "0317";
 
 function enableAchievements(password) {
     if(password == PSSWD){
         ACHIEVEMENTS_ENABLED = true;
         document.getElementById("notice").style.visibility = "visible";
-        console.log("achievements enabled");
+        console.log("%c[Achievements enabled]", "font-weight:bolder; font-size:20pt");
+
+        giveHint();
+    }
+}
+
+function giveHint() {
+    const hints = [
+        {
+            "text": "Hi, miss hacker. Here is a hint for one of the achievements:", 
+            "style": "color: pink; font-size: 12pt"
+        },
+        {
+            "text": "Nyan cat", 
+            "style": "font-family: Arial; font-weight: bold; font-size: 50pt; color: red; text-shadow: 3px 3px 0 rgb(217,31,38) , 6px 6px 0 rgb(226,91,14) , 9px 9px 0 rgb(245,221,8) , 12px 12px 0 rgb(5,148,68) , 15px 15px 0 rgb(2,135,206) , 18px 18px 0 rgb(4,77,145) , 21px 21px 0 rgb(42,21,113)"
+        },
+        {
+            "text": `
+              ▒▒▒▒▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+              ▒▒▒▒▒█░▒▒▒▒▒▒▓▒▓▒▒▒▒▒▒▒░█
+             ▒▒▒▒▒█░▒▒▓▒▒▒▒▒▒▒▄▄▒▓▒▒░█░▄▄ 
+            ▄▀▀▄▄█░▒▒▒▒▒▒▓▒▒█░░▀▄▄▄▄▄▀░░█ 
+            █░░░░█░▒▒▒▒▒▒▒▒▒█░░░░░░░░░░░█
+            █░░░░█░▒▒▒▒▒▒▒▒▒█░░░░░░░░░░░█
+            ▒▀▀▄▄█░▒▒▒▓▒▒▓▒█░░░█░░░░░█░░░█
+            ▒▒▒▒▒█░▒▓▒▒▒▓▒▒█░░░░░░░▀░░░░░█
+            ▒▒▒▄▄█░▒▒▒▓▒▒▒▒▒█░░█▄▄█▄▄█░░█ 
+            ▒▒█░░░█▄▄▄▄▄▄▄▄█░█▄▄▄▄▄▄▄▄▄█ 
+            ▒▒▒█▄▄█░░█▄▄█░░░░█▄▄█░░█▄▄
+            `,
+            "style": "font-family: 'Roboto', sans-serif; color: rgb(255, 10, 235); text-shadow: 3px 3px 0 rgb(46, 3, 39)"
+        }
+    ]
+
+    for(let i = 0; i < hints.length; i++){
+        console.log("%c"+hints[i].text, hints[i].style);
     }
 }
 
