@@ -493,7 +493,7 @@ function Update() {
 
 setInterval(Update, 1000/60);
 
-const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": purpleColor, "completed": false, "timer": 0}, {"function": bookHint, "completed": false}, {"function": sixSeven, "completed": false, "timer": 0}];
+const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": purpleColor, "completed": false, "timer": 0}, {"function": bookHint, "completed": false}, {"function": sixSeven, "completed": false}, {"function": discord, "completed": false, "timer": 0}];
 
 function checkForAchievements() {
     for(let i = 0; i < ACHIEVEMENTS.length; i++){
@@ -566,10 +566,37 @@ function sixSeven(){
     }
 }
 
+function discord() {
+
+    let wumpus = true;
+
+    KITTY.forEach(part => {
+        if(part.name == "leaf"){
+            if(part.hue > 35 && part.hue != 360){
+                wumpus = false;
+            }
+        }else if(!part.name.includes("pupil")){
+            if(part.grayscale > 50 || part.hue < 200 || part.hue > 250){
+                wumpus = false;
+            }
+        }
+    })
+
+    if(wumpus){
+        ACHIEVEMENTS[4].timer += 2/60;
+
+        if(ACHIEVEMENTS[4].timer > 2) {
+
+            alert("You found Wumpus!!! (tell me when you found this)");
+            return true;
+        }
+    }else{
+        ACHIEVEMENTS[4].timer = 0;
+    }
+
+}
+
 function bookHint() {
-    //body: 270-300(h) 50-75(l) 0-25(s)
-    //head, tail, feet 100(s) l<50
-    //at least 1 rainbow thing (nose, iris, leaf)
 
     let nyanCat = true;
     let rainbowPart = false;
