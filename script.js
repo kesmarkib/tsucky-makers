@@ -385,11 +385,11 @@ for(let i = 0; i < accessories_available.length; i++){
     ACCESSORY_CONTAINER.appendChild(div);
 
    div.addEventListener("click", e => {     
-        if(ACCESSORIES.includes(e.explicitOriginalTarget)){
-            removeAccessory(e.explicitOriginalTarget);
+        if(ACCESSORIES.includes(e.target)){
+            removeAccessory(e.target);
             div.classList.remove("active");
         }else{
-            addAccessory(e.explicitOriginalTarget);
+            addAccessory(e.target);
             div.classList.add("active")
         }
    })
