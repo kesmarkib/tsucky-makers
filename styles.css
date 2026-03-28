@@ -160,6 +160,29 @@ html, body{
   cursor: pointer; 
 }
 
+input[type=number]{
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    background-color: #14101448;
+    border-radius: 5px;
+    margin: 10px;
+    height: auto;
+    width: 50px;
+    font-size: 16pt;
+    font-weight: bolder;
+    color: white;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]:invalid{
+    background-color: rgb(255, 0, 0);
+}
+
 #hue-selector{
     background-color: hsla(60deg, 100%, 50%, 0.3);
 }

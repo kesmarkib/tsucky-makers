@@ -1,6 +1,3 @@
-//TODO: reset button, slider values are input fields, accessories
-//priority: 3, 2, 1
-
 const STUFF = document.getElementById("stuff");
 
 const CAT_CONTAINER = document.getElementById("tsucky-container");
@@ -11,9 +8,9 @@ const PART_EDITOR = document.getElementById("part-editor-container");
 const ACCESSORY_SELECTOR_CONTAINER = document.getElementById("accessory-selector-container");
 const ACCESSORY_CONTAINER = document.getElementById("accessories-container");
 
-const HUE_SELECTOR = {"this": document.getElementById("hue-selector"), "slider": document.getElementById("hue-slider"), "value": document.getElementById("hue-value")};
-const BRIGHTNESS_SELECTOR = {"this": document.getElementById("brightness-selector"), "slider":  document.getElementById("brightness-slider"), "value": document.getElementById("brightness-value")};
-const GRAYSCALE_SELECTOR = {"this": document.getElementById("grayscale-selector"), "slider":  document.getElementById("grayscale-slider"), "value": document.getElementById("grayscale-value")};
+const HUE_SELECTOR = {"this": document.getElementById("hue-selector"), "slider": document.getElementById("hue-slider"), "num": document.getElementById("hue-value")};
+const BRIGHTNESS_SELECTOR = {"this": document.getElementById("brightness-selector"), "slider":  document.getElementById("brightness-slider"), "num": document.getElementById("brightness-value")};
+const GRAYSCALE_SELECTOR = {"this": document.getElementById("grayscale-selector"), "slider":  document.getElementById("grayscale-slider"), "num": document.getElementById("grayscale-value")};
 
 let ACHIEVEMENTS_ENABLED = false;
 
@@ -273,18 +270,26 @@ function selectPart(name){
     SELECTED.push(part);
 
     HUE_SELECTOR.slider.value  = part.hue;
-    HUE_SELECTOR.value.innerText = part.hue;
+    HUE_SELECTOR.num.value = part.hue;
     BRIGHTNESS_SELECTOR.slider.value = part.brightness/2;
-    BRIGHTNESS_SELECTOR.value.innerText = part.brightness/2;
+    BRIGHTNESS_SELECTOR.num.value = part.brightness/2;
     GRAYSCALE_SELECTOR.slider.value = part.grayscale;
-    GRAYSCALE_SELECTOR.value.innerText = part.grayscale;
+    GRAYSCALE_SELECTOR.num.value = part.grayscale;
 }
 
 //hue
 HUE_SELECTOR.slider.addEventListener("input", e => {
-    let value = e.target.value;
-    HUE_SELECTOR.value.innerText = value;
-    changeHue(value);
+    let val = e.target.value;
+    HUE_SELECTOR.num.value = val;
+    changeHue(val);
+    updateSliders();
+    updateSelectors();
+})
+
+HUE_SELECTOR.num.addEventListener("input", e => {
+    let val = e.target.value;
+    HUE_SELECTOR.slider.value = val;
+    changeHue(val);
     updateSliders();
     updateSelectors();
 })
@@ -298,9 +303,17 @@ function changeHue(deg){
 
 //grayscale
 GRAYSCALE_SELECTOR.slider.addEventListener("input", e => {
-    let value = e.target.value;
-    GRAYSCALE_SELECTOR.value.innerText = value;
-    changeGrayscale(value);
+    let val = e.target.value;
+    GRAYSCALE_SELECTOR.num.value = val;
+    changeGrayscale(val);
+    updateSliders();
+    updateSelectors();
+})
+
+GRAYSCALE_SELECTOR.num.addEventListener("input", e=> {
+    let val = e.target.value;
+    GRAYSCALE_SELECTOR.slider.value = val;
+    changeGrayscale(val);
     updateSliders();
     updateSelectors();
 })
@@ -314,9 +327,17 @@ function changeGrayscale(p){
 
 //brightness
 BRIGHTNESS_SELECTOR.slider.addEventListener("input", e => {
-    let value = e.target.value;
-    BRIGHTNESS_SELECTOR.value.innerText = value;
-    changeBrightness(value);
+    let val = e.target.value;
+    BRIGHTNESS_SELECTOR.num.value = val;
+    changeBrightness(val);
+    updateSliders();
+    updateSelectors();
+})
+
+BRIGHTNESS_SELECTOR.num.addEventListener("input", e=> {
+    let val = e.target.value;
+    BRIGHTNESS_SELECTOR.slider.value = val;
+    changeBrightness(val);
     updateSliders();
     updateSelectors();
 })
@@ -472,7 +493,7 @@ function Update() {
 
 setInterval(Update, 1000/60);
 
-const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": purpleColor, "completed": false, "timer": 0}, {"function": bookHint, "completed": false}];
+const ACHIEVEMENTS = [{"function": eyes, "completed": false}, {"function": purpleColor, "completed": false, "timer": 0}, {"function": bookHint, "completed": false}, {"function": sixSeven, "completed": false, "timer": 0}];
 
 function checkForAchievements() {
     for(let i = 0; i < ACHIEVEMENTS.length; i++){
@@ -529,6 +550,22 @@ function purpleColor(){
     }
 }
 
+function sixSeven(){
+
+    let sixtyseven = true;
+
+    KITTY.forEach(part => {
+        if(part.hue != 67 || part.brightness/2 != 67 || part.grayscale != 67){
+            sixtyseven = false;
+        }
+    })
+
+    if(sixtyseven){
+        alert("really...");
+        return true;
+    }
+}
+
 function bookHint() {
     //body: 270-300(h) 50-75(l) 0-25(s)
     //head, tail, feet 100(s) l<50
@@ -568,7 +605,6 @@ function bookHint() {
         return true;
     }
 }
-
 
 /* 
 ░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░       ░▒▓███████▓▒░▒▓████████▓▒░▒▓██████▓▒░░▒▓███████▓▒░░▒▓████████▓▒░▒▓████████▓▒░ 
